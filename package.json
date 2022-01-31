@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +24,7 @@
     "express": "^4.17.2",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
-    "save": "^2.4.0",
-    "save-dev": "^0.0.1-security"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "eslint": "^8.7.0",
