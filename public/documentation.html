@@ -1,15 +1,178 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8" />
-    <title>DOCUMENTATION</title>
-  </head>
-  <body>
-    <h1>Documentation</h1>
-    <h2>API myFlix</h2>
-    <p>
-      REST API that interacts with a database that stores data about different
-      movies.
-    </p>
-  </body>
-</html>
+<head>
+  <meta charset="utf-8" />
+  <title>DOCUMENTATION</title>
+  <link
+  rel="stylesheet"
+  href="css/styles.css"
+  type="text/css"
+  />
+</head>
+<body>
+  <h1>Documentation</h1>
+  <h2>API myFlix</h2>
+  <p>
+    REST API that interacts with a database that stores data about different
+    movies.
+  </p>
+
+  <table>
+    <tr>
+      <th>Description</th>
+      <th>URL</th>
+      <th>HTTP Method</th>
+      <th>Query Parameters</th>
+      <th>Request body format</th>
+      <th>Response body format</th>
+    </tr>
+    <tr>
+      <td>Return a list of ALL movies to the user</td>
+      <td>/movies</td>
+      <td>GET</td>
+      <td>N/A</td>
+      <td>None</td>
+      <td>A JSON object with data about all movies in the database</td>
+    </tr>
+    <tr>
+      <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a
+        single movie by title to the user</td>
+        <td>/movies/[movieTitle]</td>
+        <td>GET</td>
+        <td>[movieTitle]</td>
+        <td>None</td>
+        <td>A JSON object containing data about a single movie, containing description, genre, director, image URL, whether it's featured or not. Example: <br>
+          <p class="code">{</p>
+            <p class="code">title: 'Moulin Rouge',</p>
+            <p class="code">director: {</p>
+              <p class="code indent-1">name: 'Baz Lurhman',</p>
+              <p class="code indent-1">bio: 'Baz Luhrmann is an Australian writer, director, and producer with projects spanning film, television, opera, theatre, music, and recording industries. He is regarded by many as a contemporary example of an auteur for his distinctly recognizable style and deep involvement in the writing, directing, design, and musical components of all his work. As a storyteller, he\'s known as a pioneer of pop culture, fusing high and low culture with a unique sonic and cinematic language. ',</p>
+              <p class="code indent-1">birthYear: 1962,</p>
+              <p class="code indent-1">deathYear: null</p>
+            },</p>
+            <p class="code">description: 'A poor Bohemian poet in 1890s Paris falls for a beautiful courtesan and nightclub star whom a jealous duke covets.',</p>
+            <p class="code">  genre:</p>
+            <p class="code indent-1">  { name: 'Musical',</p>
+            <p class="code indent-1">  description: 'Musicals originated as stage plays, but they soon became a favorite for many film directors and have even made their way into television. Musicals can incorporate any other genre, but they incorporate characters who sing songs and perform dance numbers.'</p>
+            <p class="code">},</p>
+            <p class="code">imageURL: 'https://movieposters.ie/wp-content/uploads/2013/01/MQUAD_MR_.jpg',</p>
+            <p class="code">featured: false</p>
+            <p class="code">  }</td>
+            </tr>
+            <tr>
+              <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
+              <td>/movies/genres/[genreName]</td>
+              <td>GET</td>
+              <td>[genreName]</td>
+              <td>None</td>
+              <td>A JSON object with name and description of the genre.</td>
+            </tr>
+            <tr>
+              <td>Allow users to see the films a director has directed.</td>
+              <td>/movies/directors/[directorName]/movielist</td>
+              <td>GET</td>
+              <td>[directorName]</td>
+              <td>None</td>
+              <td>A JSON object with data about all movies a director has directed.</td>
+            </tr>
+            <tr>
+              <td>Return data about a director (bio, birth year, death year) by name.</td>
+              <td>/movies/directors/[directorName]</td>
+              <td>GET</td>
+              <td>[directorName]</td>
+              <td>None</td>
+              <td>
+                A JSON object containing data about a director (bio, birth year, death year) by name.
+                <p>Example:</p>
+                <p class="code">{</p>
+                  <p class="code indent-1">name: 'Buster Keaton',</p>
+                  <p class="code indent-1">bio: 'Joseph Frank "Buster" Keaton was an American actor, comedian and filmmaker. He is best known for his silent films, in which his trademark was physical comedy with a consistently stoic, deadpan expression that earned him the nickname "The Great Stone Face".’,</p>
+                  <p class="code indent-1">birthYear: ‘1895’,</p>
+                  <p class="code indent-1">death Year: ‘1966’</p>
+                  <p class="code">}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>Allow users to see the films an actor has starred in.</td>
+                <td>/movies/actors/[actorName]/movielist</td>
+                <td>GET</td>
+                <td>[actorName]</td>
+                <td>None</td>
+                <td>A JSON object with data about all movies a an actor has starred in.</td>
+              </tr>
+              <tr>
+                <td>Allow users to view information about different actors</td>
+                <td>/movies/actors/[actorName]</td>
+                <td>[actorName]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>
+                  A JSON object containing data about an actor (bio, birth year, death year) by name.
+                  <p>Example:</p>
+                  <p class="code">{</p>
+                    <p class="code indent-1">name: 'Cybill Shepherd',</p>
+                    <p class="code indent-1">bio: 'Cybill Lynne Shepherd is an American actress, singer and former model. Her first film and breakthrough role was as Jacy in Peter Bogdanovich's coming-of-age drama The Last Picture Show alongside Jeff Bridges and Timothy Bottoms.’,</p>
+                    <p class="code indent-1">birthYear: ‘1950’,</p>
+                    <p class="code indent-1">death Year: ‘’</p>
+                    <p class="code">}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Allow new users to register.</td>
+                  <td>/users/</td>
+                  <td>PUT</td>
+                  <td>N/A</td>
+                  <td>A JSON object containing the information for the new user.
+                    <p class="code">Example:</p>
+                    <p class="code indent-1">{</p>
+                      <p class="code indent-1">id:1,</p>
+                      <p class="code indent-1">name:’Ana Maria’,</p>
+                      <p class="code">}</p></td>
+                      <td>A JSON object containing the information for the new user.
+                        <p class="code">Example:</p>
+                        <p class="code indent-1">{</p>
+                          <p class="code indent-1">id:1,</p>
+                          <p class="code indent-1">name:’Ana Maria’,</p>
+                          <p class="code">}</p></td>
+                        </tr>
+                        <tr>
+                          <td>Allow users to update their user info (username)</td>
+                          <td>/users/[userID]</td>
+                          <td>PUT</td>
+                          <td>[userID]</td>
+                          <td>A JSON object containing the new information for the user.
+                            <p class="code">Example:</p>
+                            <p class="code indent-1">{</p>
+                              <p class="code indent-1">id:1,</p>
+                              <p class="code indent-1">name:’Ana Maria’,</p>
+                              <p class="code">}</p></td>
+                        
+                          <td>A JSON object with the user information.</td>
+                        </tr>
+                        <tr>
+                          <td>Allow existing users to deregister.</td>
+                          <td>/users/[userID]</td>
+                          <td>DELETE</td>
+                          <td>[userID]</td>
+                          <td>None</td>
+                          <td>A text message saying “'User ID ' + id + ' has been deleted.'”</td>
+                        </tr>
+                        <tr>
+                          <td>Allow users to add a movie to their list of favorites.</td>
+                          <td>/users/[userID]/[movieTitle]</td>
+                          <td>POST</td>
+                          <td>[userID] + [movieTitle]</td>
+                          <td>None</td>
+                          <td>A text message saying “[Movie Title] has been added to [User]'s' list of favorites.”</td>
+                        </tr>
+                        <tr>
+                          <td>Allow users to remove a movie from their list of favorites.</td>
+                          <td>/users/[userID]/[movieTitle]</td>
+                          <td>DELETE</td>
+                          <td>[userID] + [movieTitle]</td>
+                          <td>None</td>
+                          <td>A text message saying “[Movie Title] has been removed from [User]'s list of favorites.”</td>
+                        </tr>
+                      </table>
+                    </body>
+                    </html>
