@@ -1,0 +1,37 @@
+body {
+  padding: 5em;
+  text-align: center;
+}
+
+table, th, td {
+  border: 1px dotted gray;
+
+}
+
+th, td {
+  padding: 1em;
+}
+
+td {
+  padding: 1em;
+  text-align: justify;
+}
+
+p {
+  margin-top: 0.3em ;
+  margin-bottom: 0.3em ;
+}
+
+.code, .code > p {
+  color: teal;
+}
+
+
+.indent-1 {
+  text-indent: 5%
+}
+
+
+.indent-2 {
+  text-indent: 10%
+}
