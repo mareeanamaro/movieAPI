@@ -136,43 +136,44 @@
                           <p class="code">}</p></td>
                         </tr>
                         <tr>
-                          <td>Allow users to update their user info (username)</td>
-                          <td>/users/[userID]</td>
+                          <td>Allow users to update their user info</td>
+                          <td>/users/[Username]</td>
                           <td>PUT</td>
                           <td>[userID]</td>
                           <td>A JSON object containing the new information for the user.
                             <p class="code">Example:</p>
                             <p class="code indent-1">{</p>
-                              <p class="code indent-1">id:1,</p>
-                              <p class="code indent-1">name:’Ana Maria’,</p>
+                              <p class="code indent-1">"Username": "anamaria",</p>
+                              <p class="code indent-1">"Password": "123456",</p>
+                              <p class="code indent-1">"Email": "anamaria.fernandes@gmail.com",</p>
+                              <p class="code indent-1">"Birthday": "1965-01-01T00:00:00.000Z",</p>
                               <p class="code">}</p></td>
-                        
-                          <td>A JSON object with the user information.</td>
-                        </tr>
-                        <tr>
-                          <td>Allow existing users to deregister.</td>
-                          <td>/users/[userID]</td>
-                          <td>DELETE</td>
-                          <td>[userID]</td>
-                          <td>None</td>
-                          <td>A text message saying “'User ID ' + id + ' has been deleted.'”</td>
-                        </tr>
-                        <tr>
-                          <td>Allow users to add a movie to their list of favorites.</td>
-                          <td>/users/[userID]/[movieTitle]</td>
-                          <td>POST</td>
-                          <td>[userID] + [movieTitle]</td>
-                          <td>None</td>
-                          <td>A text message saying “[Movie Title] has been added to [User]'s' list of favorites.”</td>
-                        </tr>
-                        <tr>
-                          <td>Allow users to remove a movie from their list of favorites.</td>
-                          <td>/users/[userID]/[movieTitle]</td>
-                          <td>DELETE</td>
-                          <td>[userID] + [movieTitle]</td>
-                          <td>None</td>
-                          <td>A text message saying “[Movie Title] has been removed from [User]'s list of favorites.”</td>
-                        </tr>
-                      </table>
-                    </body>
-                    </html>
+                              <td>A JSON object with the user information.</td>
+                            </tr>
+                            <tr>
+                              <td>Allow existing users to deregister.</td>
+                              <td>/users/[Username]</td>
+                              <td>DELETE</td>
+                              <td>[Username]</td>
+                              <td>None</td>
+                              <td>A text message saying “Username + ' has been deleted.'”</td>
+                            </tr>
+                            <tr>
+                              <td>Allow users to add a movie to their list of favorites.</td>
+                              <td>/users/[Username]/movies/[movieID]</td>
+                              <td>POST</td>
+                              <td>[Username] + [movieID]</td>
+                              <td>None</td>
+                              <td>A JSON object with the updated user information.”</td>
+                            </tr>
+                            <tr>
+                              <td>Allow users to remove a movie from their list of favorites.</td>
+                              <td>/users/[Username]/movies/[movieID]</td>
+                              <td>DELETE</td>
+                              <td>[Username] + [movieID]</td>
+                              <td>None</td>
+                              <td>A JSON object with the updated user information.”</td>
+                            </tr>
+                          </table>
+                        </body>
+                        </html>
