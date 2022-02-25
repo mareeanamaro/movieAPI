@@ -11,7 +11,6 @@ const Users = Models.User;
 
 mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
-
 const app = express();
 
 app.use(bodyParser.json());
