@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
 });
 
 // get info on all movies
-app.get('/movies'/*, passport.authenticate('jwt', { session: false})*/, (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.find()
   .then((movies) => {
     res.status(SUCCESS).json(movies);
