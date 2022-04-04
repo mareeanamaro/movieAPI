@@ -69,6 +69,22 @@ app.get('/users', passport.authenticate('jwt', { session: false}), (req, res) =>
   });
 });
 
+// get info on one user
+app.get('/users/:Username', passport.authenticate('jwt', { session: false}), (req, res) => {
+  Users.findOne( { Username: req.params.Username })
+  .then((user) => {
+  if(user) {
+    res.status(SUCCESS).json(user);
+    } else {
+     res.status(NOT_FOUND).json('User not found');
+     }
+  })
+  .catch((err) => {
+    res.status(INTERNAL_SERVER_ERROR).send('Error: ' + err);
+  });
+});
+
+
 // get info on one movie by title
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.findOne( { Title: req.params.Title })
