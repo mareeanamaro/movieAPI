@@ -191,7 +191,6 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
 [
   check('Username', 'Username is required').isLength({ min:5 }),
   check('Username', 'Username contains non-alphanumeric characters.').isAlphanumeric(),
-  check('Password', 'Password is required.').not().isEmpty(),
   check('Email', 'Email does not appear to be valid').isEmail()
 ],
   (req,res) => {
@@ -200,15 +199,19 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
     if(!errors.isEmpty()) {
       return res.status(UNPROCESSABLE_ENTITY).json({ error: errors.array() });
     }
+	
+	let hashedPassword;
 
-    let hashedPassword = Users.hashPassword(req.body.Password);
+	if(req.body.Password) {
+		hashedPassword = Users.hashPassword(req.body.Password);
+	}
 
     Users.findOneAndUpdate(
       { Username: req.params.Username },
       { $set:
         {
           Username: req.body.Username,
-          Password: hashedPassword,
+          ...(hashedPassword && { Password: hashedPassword }),
           Email: req.body.Email,
           Birthday: req.body.Birthday
         },
