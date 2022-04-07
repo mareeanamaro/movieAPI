@@ -224,10 +224,11 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
     });
 
     // add movie to favorites
-    app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false}), (req,res) => {
+    app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false}), async (req,res) => {	     
+      const movie = await Movies.findOne({._id: req.params.MovieID });
       Users.findOneAndUpdate ({ Username: req.params.Username
       }, {
-        $push: { FavoriteMovies: req.params.MovieID}
+        $push: { FavoriteMovies: movie}
       },
       { new: true},
       (err, updatedUser) => {
