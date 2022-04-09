@@ -227,7 +227,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
     });
 
     // add movie to favorites
-    app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false}), async (req,res) => {	     
+    app.patch('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false}), async (req,res) => {	     
       const movie = await Movies.findOne({_id: req.params.MovieID });
       Users.findOneAndUpdate ({ Username: req.params.Username
       }, {
