@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 const cors = require('cors');
 app.use(cors());
 
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'http://testsite.com', 'flicking-through-flicks.netlify.app'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'flicking-through-flicks.netlify.app'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -205,7 +205,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
 [
   check('Username', 'Username is required').isLength({ min:5 }),
   check('Username', 'Username contains non-alphanumeric characters.').isAlphanumeric(),
-  check('Email', 'Email does not appear to be valid').isEmail()
+  //check('Email', 'Email does not appear to be valid').isEmail()
 ],
   (req,res) => {
     let errors = validationResult(req);
