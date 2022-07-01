@@ -98,6 +98,20 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false}), (re
   });
 });
 
+// get favorite movies for one user
+app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
+	User.findOne( { Username: req.params.Username})
+	.then((user) => {
+	if(user) {
+    res.status(SUCCESS).json(user.FavoriteMovies);
+    } else {
+     res.status(NOT_FOUND).json('Could not find favorite movies for this user');
+     }
+  })
+  .catch((err) => {
+    res.status(INTERNAL_SERVER_ERROR).send('Error: ' + err);})
+})	
+
 
 // get info on one movie by title
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req, res) => {
