@@ -106,7 +106,7 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false}), (re
 
 // get favorite movies for one user
 app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
-	User.findOne( { Username: req.params.Username})
+	Users.findOne( { Username: req.params.Username})
 	.then((user) => {
 	if(user) {
     res.status(SUCCESS).json(user.FavoriteMovies);
