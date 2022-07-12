@@ -35,7 +35,7 @@ const cors = require('cors');
 //   }
 // }));
 
-// DELETE this when uncommenting CORS POLICY!!
+// DELETE this when uncommenting CORS POLICY
 app.use(cors({
   origin: '*'
 }));
@@ -47,6 +47,7 @@ require('./passport');
 
 //validate content
 const { check, validationResult } = require ('express-validator');
+const { has } = require('lodash');
 
 // logging middleware
 app.use(morgan('common'));
@@ -67,7 +68,12 @@ app.get('/', (req, res) => {
   res.send('Welcome to MyFlix!');
 });
 
-// get info on all movies
+/**
+ * GET info on all movies
+ * request body: bearer token
+ * @requires passport 
+ * @returns array of movie objects
+ */
 app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.find()
   .then((movies) => {
@@ -78,7 +84,12 @@ app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) =
   });
 });
 
-// get info on all users
+/**
+ * GET info on all users
+ * request body: bearer token
+ * @requires passport
+ * @returns an array of user objects
+ */
 app.get('/users', passport.authenticate('jwt', { session: false}), (req, res) => {
   Users.find()
   .then((users) => {
@@ -89,7 +100,13 @@ app.get('/users', passport.authenticate('jwt', { session: false}), (req, res) =>
   });
 });
 
-// get info on one user
+/**
+ * GET info on one user by username
+ * request body: bearer token
+ * @param {string} Username
+ * @requires passport
+ * @returns user object
+ */
 app.get('/users/:Username', passport.authenticate('jwt', { session: false}), (req, res) => {
   Users.findOne( { Username: req.params.Username })
   .then((user) => {
@@ -104,7 +121,13 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false}), (re
   });
 });
 
-// get favorite movies for one user
+/**
+ * GET favourite movies for one user by username
+ * request body: bearer token
+ * @param {string} Username
+ * @requires passport
+ * @returns an array of movie IDs
+ */
 app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
 	Users.findOne( { Username: req.params.Username})
 	.then((user) => {
@@ -119,7 +142,13 @@ app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false
 })	
 
 
-// get info on one movie by title
+/**
+ * GET information on one particular movie by title
+ * request body: bearer token
+ * @param {string} Title (of movie)
+ * @requires passport
+ * @returns movie object
+ */
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req, res) => {
   Movies.findOne( { Title: req.params.Title })
   .then((movie) => {
@@ -133,7 +162,13 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
     })
   });
 
-  // get info on genre
+  /**
+ * GET information on one particular genre by name
+ * request body: bearer token
+ * @param {string} Name (of genre)
+ * @requires passport
+ * @returns genre object
+ */
   app.get('/movies/genres/:genreName', passport.authenticate('jwt', { session: false}), (req,res) => {
     Movies.findOne( { "Genre.Name": req.params.genreName })
     .then((movie) => {
@@ -147,7 +182,13 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
     })
   });
 
-  // get info on director
+  /**
+ * GET information on one particular director by name
+ * request body: bearer token
+ * @param {string} Name (of director)
+ * @requires passport
+ * @returns director object
+ */
   app.get('/movies/directors/:directorName', passport.authenticate('jwt', { session: false}), (req,res) => {
     Movies.findOne( { "Director.Name": req.params.directorName })
     .then((movie) => {
@@ -162,7 +203,13 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
     })
   });
 
-  // get films by director name
+  /**
+ * GET information on the movies of one particular director by name
+ * request body: bearer token
+ * @param {string} Name (of director)
+ * @requires passport
+ * @returns an array of movie objects
+ */
   app.get('/movies/directors/movielist/:directorName/', passport.authenticate('jwt', { session: false}), (req,res) => {
     Movies.find( { "Director.Name": req.params.directorName })
     .then((movies) => {
@@ -180,8 +227,14 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
     })
   });
 
-  //add a new user to the database
+  /**
+   * POST a new user to the database
+   * request body: Username, Password, Email, Birthday
+   * Username, Password and Email are required
+   * @returns user object
+   */
   app.post('/users',
+  // validation logic
 [
   check('Username', 'Username is required').isLength({ min:5 }),
   check('Username', 'Username contains non-alphanumeric characters.').isAlphanumeric(),
@@ -191,12 +244,14 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
   (req,res) => {
 
     let errors = validationResult(req);
-
+    // check body for errors
     if(!errors.isEmpty()) {
       return res.status(UNPROCESSABLE_ENTITY).json({ error: errors.array() });
     }
 
-    let hashedPassword = Users.hashPassword(req.body.Password);
+    let hashedPassword = Users.hashPassword(req.body.Password); // hashing the password 
+
+    // creates and returns the new user
     Users.findOne({ Username: req.params.Username })
     .then ((user) => {
       if (user) {
@@ -220,7 +275,10 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
     });
   });
 
-  // allow users to update their info
+  /**
+   * PUT updated user info into the database
+   * 
+   */
   app.put('/users/:Username', passport.authenticate('jwt', { session: false}),
 [
   check('Username', 'Username is required').isLength({ min:5 }),
@@ -236,16 +294,16 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false}), (req,
 	
 	let hashedPassword;
 
-	if(req.body.Password) {
-		hashedPassword = Users.hashPassword(req.body.Password);
-	}
+	if (req.body.hasOwnProperty('Password')) {
+    hashedPassword = Users.hashPassword(req.body.Password);
+  }
 
     Users.findOneAndUpdate(
       { Username: req.params.Username },
       { $set:
         {
           Username: req.body.Username,
-          ...(hashedPassword && { Password: hashedPassword }),
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday
         },
