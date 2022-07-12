@@ -71,7 +71,7 @@ const { SUCCESS, CREATED, BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, INTER
 /**
  * returns welcome message for '/' request URL
  * GET
- * @return Welcome message
+ * @returns Welcome message
  */
 app.get('/', (req, res) => {
   res.send('Welcome to MyFlix!');
@@ -80,8 +80,8 @@ app.get('/', (req, res) => {
 /**
  * GET info on all movies
  * request body: bearer token
- * @require passport 
- * @return array of movie objects
+ * @requires passport 
+ * @returns array of movie objects
  */
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
@@ -96,8 +96,8 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
 /**
  * GET info on all users
  * request body: bearer token
- * @require passport
- * @return an array of user objects
+ * @requires passport
+ * @returns an array of user objects
  */
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
@@ -113,8 +113,8 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
  * GET info on one user by username
  * request body: bearer token
  * @param {string} Username
- * @require passport
- * @return user object
+ * @requires passport
+ * @returns user object
  */
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ Username: req.params.Username })
@@ -134,8 +134,8 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
  * GET favourite movies for one user by username
  * request body: bearer token
  * @param {string} Username
- * @require passport
- * @return an array of movie IDs
+ * @requires passport
+ * @returns an array of movie IDs
  */
 app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ Username: req.params.Username })
@@ -156,8 +156,8 @@ app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false
  * GET information on one particular movie by title
  * request body: bearer token
  * @param {string} Title (of movie)
- * @require passport
- * @return movie object
+ * @requires passport
+ * @returns movie object
  */
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ Title: req.params.Title })
@@ -177,8 +177,8 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 * GET information on one particular genre by name
 * request body: bearer token
 * @param {string} Name (of genre)
-* @require passport
-* @return genre object
+* @requires passport
+* @returns genre object
 */
 app.get('/movies/genres/:genreName', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ "Genre.Name": req.params.genreName })
@@ -198,8 +198,8 @@ app.get('/movies/genres/:genreName', passport.authenticate('jwt', { session: fal
 * GET information on one particular director by name
 * request body: bearer token
 * @param {string} Name (of director)
-* @require passport
-* @return director object
+* @requires passport
+* @returns director object
 */
 app.get('/movies/directors/:directorName', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ "Director.Name": req.params.directorName })
@@ -219,8 +219,8 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
 * GET information on the movies of one particular director by name
 * request body: bearer token
 * @param {string} Name (of director)
-* @require passport
-* @return an array of movie objects
+* @requires passport
+* @returns an array of movie objects
 */
 app.get('/movies/directors/movielist/:directorName/', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find({ "Director.Name": req.params.directorName })
@@ -243,7 +243,7 @@ app.get('/movies/directors/movielist/:directorName/', passport.authenticate('jwt
  * POST a new user to the database
  * request body: Username, Password, Email, Birthday
  * Username, Password and Email are required
- * @return user object
+ * @returns user object
  */
 app.post('/users',
   // validation logic
@@ -291,8 +291,8 @@ app.post('/users',
  * PUT updated user info into the database
  * request body: bearer token, updated user info
  * @param {string} Username
- * @require passport
- * @return updated user object
+ * @requires passport
+ * @returns updated user object
  */
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
   [
@@ -340,8 +340,8 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
  * @async
  * @param {string} Username
  * @param {string} MovieID
- * @require passport
- * @return updated user object
+ * @requires passport
+ * @returns updated user object
  */
 app.patch('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const movie = await Movies.findOne({ _id: req.params.MovieID });
@@ -365,8 +365,8 @@ app.patch('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { ses
  * request body: bearer token
  * @param {string} Username
  * @param {string} MovieID
- * @require passport
- * @return updated user object
+ * @requires passport
+ * @returns updated user object
   */
 app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username },
@@ -388,8 +388,8 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
  * DELETE user from the database
  * request body: bearer token
  * @param {string} Username
- * @require passport
- * @return success message
+ * @requires passport
+ * @returns success message
  */
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
