@@ -8,6 +8,7 @@ require('./passport');
 
 /**
  * creates JWT / token 
+ * @function generateJWTToken
  * @param {object} user 
  * @returns user object, jwt + token info
  */
